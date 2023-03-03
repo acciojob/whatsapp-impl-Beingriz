@@ -23,10 +23,9 @@ public class WhatsappController {
     WhatsappService whatsappService = new WhatsappService();
 
     @PostMapping("/add-user")
-    public String createUser(String name, String mobile) throws Exception {
+    public String createUser(@RequestParam String name, @RequestParam  String mobile) throws Exception {
         //If the mobile number exists in database, throw "User already exists" exception
         //Otherwise, create the user and return "SUCCESS"
-
         return whatsappService.createUser(name, mobile);
     }
 
@@ -48,7 +47,6 @@ public class WhatsappController {
     public int createMessage(String content){
         // The 'i^th' created message has message id 'i'.
         // Return the message id.
-
         return whatsappService.createMessage(content);
     }
 
@@ -82,12 +80,12 @@ public class WhatsappController {
         return whatsappService.removeUser(user);
     }
 
-    @GetMapping("/find-messages")
-    public String findMessage(Date start, Date end, int K) throws Exception{
-        //This is a bonus problem and does not contains any marks
-        // Find the Kth latest message between start and end (excluding start and end)
-        // If the number of messages between given time is less than K, throw "K is greater than the number of messages" exception
-
-        return whatsappService.findMessage(start, end, K);
-    }
+//    @GetMapping("/find-messages")
+//    public String findMessage(Date start, Date end, int K) throws Exception{
+//        //This is a bonus problem and does not contains any marks
+//        // Find the Kth latest message between start and end (excluding start and end)
+//        // If the number of messages between given time is less than K, throw "K is greater than the number of messages" exception
+//
+//        return whatsappService.findMessage(start, end, K);
+//    }
 }
