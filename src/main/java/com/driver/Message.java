@@ -13,11 +13,6 @@ public class Message {
     private String content;
     private Date timestamp;
 
-    //Default Constructor
-    public Message() {
-
-    }
-
 
     public Message(String content) {
         this.content = content;

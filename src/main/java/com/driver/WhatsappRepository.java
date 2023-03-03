@@ -179,7 +179,7 @@ public class WhatsappRepository {
         }
         noOfMsgs = msgs.size();
         allMsgs = AllMessages_Db.size();
-        return noOfUsers + noOfUsers + allMsgs;
+        return noOfUsers + noOfMsgs + allMsgs;
 
     }
 
