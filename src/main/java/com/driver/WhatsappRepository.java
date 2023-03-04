@@ -85,7 +85,7 @@ public class WhatsappRepository {
 
     // Creating new Message
     public int createMessage(String content){
-        int id = this.messageId++;
+        int id = this.messageId += 1;
         Message msg = new Message(id,content);
         AllMessages_Db.put(msg.getId(),msg);
         return msg.getId();
@@ -97,22 +97,24 @@ public class WhatsappRepository {
         //Throw "You are not allowed to send message" if the sender is not a member of the group
         //If the message is sent successfully, return the final number of messages in that group.
         int count = 0;
+        // Checking if Group is Exist
         if(!Groups_Db.containsKey(group)){
             throw new Exception("Group does not exist");
-        }else {
-            List<User> users = Groups_Db.get(group);
-            if(!users.contains(sender)){
-                throw new Exception("You are not allowed to send message");
-            }
         }
-        int id = this.messageId++;
-        Message msg = new Message(id,message.getContent());
-        AllMessages_Db.put(msg.getId(),msg);
+
+        // Checking User is Participant of this Group
+        List<User> users = Groups_Db.get(group);
+        if(!users.contains(sender)){
+            throw new Exception("You are not allowed to send message");
+        }
+
+        AllMessages_Db.put(message.getId(),message);
+
+        // Getting List of Messages in the Group
         List<Message> mesgs = GroupMessages_Db.get(group);
-        mesgs.add(msg);
-        count = mesgs.size();
-        SenderMsg_Db.put(msg,sender);
-        return count;
+        mesgs.add(message);
+        SenderMsg_Db.put(message,sender); // Mapping Message and Sender
+        return mesgs.size();
     }
 
     // Changing Admin
@@ -124,17 +126,16 @@ public class WhatsappRepository {
 
         if(!Groups_Db.containsKey(group)){
             throw  new Exception("Group does not exist");
-        }else{
-            User admin = Admin_Db.get(group);
-            if(!admin.getName().equals(approver.getName())){
-                throw new Exception("Approver does not have rights");
-            }else{
-                List<User> users = Groups_Db.get(group);
-                if(!users.contains(user)){
-                    throw new Exception("User is not a participant");
-                }
-            }
         }
+        User admin = Admin_Db.get(group);
+        if(!admin.equals(approver)){
+            throw new Exception("Approver does not have rights");
+        }
+        List<User> users = Groups_Db.get(group);
+        if(!users.contains(user)){
+            throw new Exception("User is not a participant");
+        }
+
         Admin_Db.put(group,user);
         return "SUCCESS";
     }
