@@ -83,10 +83,10 @@ public class WhatsappRepository {
 
     // Creating new Message
     public int createMessage(String content){
-        Message msg = new Message(content);
+        int id = this.messageId++;
+        Message msg = new Message(id,content);
         AllMessages_Db.put(msg.getId(),msg);
-        this.messageId++;
-        return this.messageId;
+        return msg.getId();
     }
 
     // Sending Message to Group
@@ -103,9 +103,9 @@ public class WhatsappRepository {
                 throw new Exception("You are not allowed to send message");
             }
         }
-        Message msg = new Message(message.getContent());
+        int id = this.messageId++;
+        Message msg = new Message(id,message.getContent());
         AllMessages_Db.put(msg.getId(),msg);
-        this.messageId++;
         List<Message> mesgs = GroupMessages_Db.get(group);
         mesgs.add(msg);
         count = mesgs.size();
