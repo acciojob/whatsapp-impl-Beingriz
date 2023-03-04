@@ -64,11 +64,13 @@ public class WhatsappRepository {
             // Mapping 1 User to 1 Group only
             UserGroups_DB.put(users.get(0), grp);
             UserGroups_DB.put(users.get(1), grp);
+            GroupMessages_Db.put(grp,new ArrayList<Message>()); // Initiallizing List of Messages for New Group
         }else if(users.size()>2){
-            if(this.customGroupCount == 0) this.customGroupCount = 1;
+            this.customGroupCount++; // Incrementing the count of groups
             String grpName = "Group "+ this.customGroupCount;
             grp = new Group(grpName, users.size()); // Group is Created
-            this.customGroupCount++; // Incrementing the count of groups
+            GroupMessages_Db.put(grp,new ArrayList<Message>()); // Initiallizing List of Messages for New Group
+
             Groups_Db.put(grp, users); // Added to Group DB
             User admin = users.get(0); // Getting first user as admin
             Admin_Db.put(grp, admin); // Mapping Admin to the group
